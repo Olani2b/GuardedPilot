@@ -1,0 +1,14 @@
+mavsdk-grpc
+mcp
+langgraph
+langchain
+langchain-ollama
+langchain-anthropic
+langgraph-checkpoint-sqlite
+shapely
+pyyaml
+pydantic
+pillow
+httpx
+pandas
+pyarrow

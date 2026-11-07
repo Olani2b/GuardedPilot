@@ -1,0 +1,35 @@
+[project]
+name = "guardedpilot"
+version = "0.1.0"
+description = "LLM drone agent behind a deterministic safety layer, plus a red-team harness."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "mavsdk-grpc",  # classic async API; the "mavsdk" name is now a different native binding (D5)
+  "mcp",
+  "langgraph",
+  "langchain",
+  "langchain-ollama",
+  "langchain-anthropic",
+  "langgraph-checkpoint-sqlite",
+  "shapely",
+  "pyyaml",
+  "pydantic",
+  "pillow",
+  "httpx",
+  "pandas",
+  "pyarrow",
+]
+
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio", "pytest-cov", "hypothesis", "ruff"]
+
+[tool.setuptools]
+packages = ["sim_bridge", "policy", "mcp_server", "agent", "perception", "eval", "redteam"]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

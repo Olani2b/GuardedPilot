@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: guardedpilot
+Version: 0.1.0
+Summary: LLM drone agent behind a deterministic safety layer, plus a red-team harness.
+Requires-Python: <3.13,>=3.12
+Requires-Dist: mavsdk-grpc
+Requires-Dist: mcp
+Requires-Dist: langgraph
+Requires-Dist: langchain
+Requires-Dist: langchain-ollama
+Requires-Dist: langchain-anthropic
+Requires-Dist: langgraph-checkpoint-sqlite
+Requires-Dist: shapely
+Requires-Dist: pyyaml
+Requires-Dist: pydantic
+Requires-Dist: pillow
+Requires-Dist: httpx
+Requires-Dist: pandas
+Requires-Dist: pyarrow

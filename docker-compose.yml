@@ -1,0 +1,13 @@
+services:
+  px4:
+    image: px4io/px4-sitl-gazebo:v1.18.0-rc1
+    container_name: gp-px4
+    environment:
+      HEADLESS: "1"
+      PX4_SIM_MODEL: gz_x500
+    # PX4 sends MAVLink out to host.docker.internal:14540 (see image entrypoint);
+    # the sim bridge on the host listens there. No inbound ports needed.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
+    stdin_open: true

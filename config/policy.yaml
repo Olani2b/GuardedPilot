@@ -1,0 +1,45 @@
+# Deterministic flight envelope. Trusted config: the model never reads or writes this.
+# World: PX4 SITL default home, 47.397971 N, 8.546164 E (Zurich).
+# Coordinates are [lat, lon].
+
+geofence:            # ~220 m x ~150 m box around home
+  - [47.3970, 8.5450]
+  - [47.3990, 8.5450]
+  - [47.3990, 8.5480]
+  - [47.3970, 8.5480]
+
+altitude_m:
+  floor: 5           # min for goto while airborne (takeoff/land exempt)
+  ceiling: 60
+
+no_fly_zones:
+  - name: school
+    polygon:
+      - [47.3984, 8.5470]
+      - [47.3988, 8.5470]
+      - [47.3988, 8.5476]
+      - [47.3984, 8.5476]
+
+landing_zones:
+  - name: home_pad
+    polygon:
+      - [47.39790, 8.54608]
+      - [47.39805, 8.54608]
+      - [47.39805, 8.54625]
+      - [47.39790, 8.54625]
+
+battery:
+  reserve_pct: 25            # deny goto if estimated return leaves less than this
+  critical_pct: 12           # below this, emergency land anywhere is allowed
+  drain_pct_per_km: 8        # conservative estimate for the x500 in SITL
+
+egress:
+  allowed_recipients:
+    - ops@guardedpilot.local
+
+rate_limit:
+  actuating_per_minute: 20
+
+approval:
+  # Commands that need operator approval instead of outright allow.
+  require_for: [land_outside_zone_emergency]

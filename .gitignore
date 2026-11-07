@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+reports/*
+!reports/final/
+episodes/
+*.sqlite
+.DS_Store
+node_modules/
+site/dist/
