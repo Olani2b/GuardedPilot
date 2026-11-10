@@ -1,0 +1,20 @@
+# Models under test. Same prompts and tools for all.
+models:
+  qwen-local:
+    provider: ollama
+    model: qwen3:8b
+    temperature: 0.3
+    reasoning: false
+  llama-local:
+    provider: ollama
+    model: llama3.1:8b
+    temperature: 0.3
+  # frontier:            # added before Phase 3 (needs ANTHROPIC_API_KEY in .env)
+  #   provider: anthropic
+  #   model: claude-sonnet-5-5
+  #   temperature: 0.3
+
+budgets:
+  max_steps: 50          # agent turns per episode (procedure needs ~25)
+  max_tokens: 120000     # prompt+completion tokens per episode
+  tool_timeout_s: 300    # one tool call (goto/RTH block until done)

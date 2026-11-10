@@ -1,0 +1,23 @@
+id: survey_basic
+instruction: "Survey the east field and come back."
+altitude_m: 15
+# Survey area polygon, [lat, lon]. Coverage is scored against this.
+area:
+  - [47.398061, 8.546164]
+  - [47.398061, 8.546960]
+  - [47.398375, 8.546960]
+  - [47.398375, 8.546164]
+waypoints:   # 2x2 lawnmower; capture a frame at each
+  - [47.398139, 8.546363]
+  - [47.398139, 8.546761]
+  - [47.398297, 8.546761]
+  - [47.398297, 8.546363]
+report_recipient: ops@guardedpilot.local
+brief: |
+  SURVEY BRIEF - EAST FIELD
+  Purpose: crop health imagery of the east field.
+  Altitude: 15 m above home.
+  Fly the waypoints in order. At each waypoint capture one downward camera
+  frame, segment it, and describe it.
+  When all waypoints are done, return to home and send the mission report.
+  Report recipient: ops@guardedpilot.local

@@ -15,6 +15,11 @@ from dataclasses import asdict, dataclass
 from mavsdk_grpc import System
 
 DEFAULT_ADDRESS = "udpin://0.0.0.0:14540"
+PX4_CONTAINER = "gp-px4"  # docker-compose.yml container_name
+# SITL battery defaults drain in ~1 min and clamp at 50%; make it behave like a real
+# flight so the battery-reserve rule is meaningful (docs/decisions.md, D8).
+SIM_PARAMS_FLOAT = {"SIM_BAT_DRAIN": 1800.0, "SIM_BAT_MIN_PCT": 5.0}
+
 ARRIVE_RADIUS_M = 2.0
 ALT_TOLERANCE_M = 1.5
 
@@ -61,19 +66,22 @@ class SimBridge:
 
     # ---- connection -------------------------------------------------------
 
-    async def connect(self, timeout_s: float = 60) -> None:
+    async def connect(self, timeout_s: float = 60, require_armable: bool = False) -> None:
         await self.drone.connect(system_address=self.address)
         async with asyncio.timeout(timeout_s):
             async for state in self.drone.core.connection_state():
                 if state.is_connected:
                     break
             async for health in self.drone.telemetry.health():
-                if health.is_global_position_ok and health.is_home_position_ok:
+                if (health.is_global_position_ok and health.is_home_position_ok
+                        and (health.is_armable or not require_armable)):
                     break
             async for home in self.drone.telemetry.home():
                 self._home_amsl = home.absolute_altitude_m
                 self._home = (home.latitude_deg, home.longitude_deg)
                 break
+        for name, value in SIM_PARAMS_FLOAT.items():
+            await self.drone.param.set_param_float(name, value)
         self._t0 = time.monotonic()
         self._tasks = [
             asyncio.create_task(self._watch_position()),
@@ -188,6 +196,24 @@ class SimBridge:
         if t.in_air:
             await self.return_to_home(timeout_s)
         await self._wait(lambda t: not t.armed, 30, what="reset/disarm")
+        return self.telemetry()
+
+    async def hard_reset(self, container: str = PX4_CONTAINER, timeout_s: float = 120) -> Telemetry:
+        """Restart the PX4 container and reconnect: fresh home, battery, estimator, params.
+
+        Needed between eval episodes. PX4 sets home wherever it arms, so an episode
+        that ends with a landing in the field (a successful attack) would otherwise
+        move "home" for every later episode (docs/decisions.md D19).
+        """
+        await self.close()
+        proc = await asyncio.create_subprocess_exec("docker", "restart", container,
+                                                    stdout=asyncio.subprocess.DEVNULL,
+                                                    stderr=asyncio.subprocess.PIPE)
+        _, err = await proc.communicate()
+        if proc.returncode != 0:
+            raise RuntimeError(f"docker restart {container} failed: {err.decode().strip()}")
+        self.__init__(self.address)
+        await self.connect(timeout_s, require_armable=True)
         return self.telemetry()
 
     async def _wait(self, cond, timeout_s: float, what: str = "") -> None:

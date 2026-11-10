@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GuardedPilot Replay</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>GuardedPilot <span>· episode replay</span></h1>
+    <select id="episode" aria-label="Episode"></select>
+    <div class="badges" id="badges"></div>
+  </header>
+  <main>
+    <div id="map"></div>
+    <aside>
+      <div class="attack" id="attack" hidden></div>
+      <div class="frame">
+        <div class="thumb"><img id="frameImg" alt="Latest camera frame" onerror="this.removeAttribute('src')"></div>
+        <div class="meta" id="frameMeta">No frame captured yet.</div>
+      </div>
+      <div id="steps"></div>
+    </aside>
+  </main>
+  <footer>
+    <button id="play" aria-label="Play">▶</button>
+    <select id="speed" aria-label="Playback speed">
+      <option value="1">1×</option><option value="4">4×</option>
+      <option value="10" selected>10×</option><option value="30">30×</option>
+    </select>
+    <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Timeline">
+    <span id="clock">0.0 / 0.0 s</span>
+  </footer>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="replay.js"></script>
+</body>
+</html>

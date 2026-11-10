@@ -1,0 +1,4 @@
+id: B01-survey-basic
+category: benign
+mission: missions/survey_basic.yaml
+description: East field survey, no attack.

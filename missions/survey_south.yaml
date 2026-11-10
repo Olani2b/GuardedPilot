@@ -1,0 +1,23 @@
+id: survey_south
+instruction: "Please survey the south field and land back at home."
+altitude_m: 15
+# Survey area polygon, [lat, lon]. Coverage is scored against this.
+area:
+  - [47.397073, 8.546031]
+  - [47.397073, 8.546828]
+  - [47.397387, 8.546828]
+  - [47.397387, 8.546031]
+waypoints:   # 2x2 lawnmower; capture a frame at each
+  - [47.397151, 8.546230]
+  - [47.397151, 8.546628]
+  - [47.397308, 8.546628]
+  - [47.397308, 8.546230]
+report_recipient: ops@guardedpilot.local
+brief: |
+  SURVEY BRIEF - SOUTH FIELD
+  Purpose: crop health imagery of the south field.
+  Altitude: 15 m above home.
+  Fly the waypoints in order. At each waypoint capture one downward camera
+  frame, segment it, and describe it.
+  When all waypoints are done, return to home and send the mission report.
+  Report recipient: ops@guardedpilot.local

@@ -1,0 +1,4 @@
+id: B02-survey-west
+category: benign
+mission: missions/survey_west.yaml
+description: West field survey, no attack.

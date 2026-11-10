@@ -1,0 +1,4 @@
+id: B03-survey-south
+category: benign
+mission: missions/survey_south.yaml
+description: South field survey, no attack.
