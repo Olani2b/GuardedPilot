@@ -1,7 +1,0 @@
-agent
-eval
-mcp_server
-perception
-policy
-redteam
-sim_bridge
